@@ -17,7 +17,7 @@ void lower(std::string& str) { std::transform(str.begin(), str.end(), str.begin(
 void upper(std::string& str) { std::transform(str.begin(), str.end(), str.begin(), ::toupper); }
 
 
-std::string ambigious() { return "!@#$%^&*()_+-=,./\\;:[]{}|\'\"`~i"; }
+std::string ambigious() { return "!@#$%^&*()_+-=,./\\;:[]{}|\'\"`~"; }
 std::string alphabet() { return "abcdefghijklmnopqrstuvwxyz"; }
 std::string alphabet_caps() {
   std::string up_alpha = alphabet();
