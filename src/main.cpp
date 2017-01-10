@@ -9,6 +9,10 @@
 #include <functional>
 #include <vector>
 
+void copy_to_clipboard(std::string text) {
+  // add linux support later.
+  system(("echo \"" + text + "\" | pbcopy").c_str());
+}
 
 std::map<std::string, std::function<std::string()>> modes;
 
@@ -17,7 +21,7 @@ void lower(std::string& str) { std::transform(str.begin(), str.end(), str.begin(
 void upper(std::string& str) { std::transform(str.begin(), str.end(), str.begin(), ::toupper); }
 
 
-std::string ambigious() { return "!@#$%^&*()_+-=,./\\;:[]{}|\'\"`~"; }
+std::string ambigious() { return "!@#$%^&*()_+-=,./\\;:[]{}|~"; }
 std::string alphabet() { return "abcdefghijklmnopqrstuvwxyz"; }
 std::string alphabet_caps() {
   std::string up_alpha = alphabet();
@@ -53,8 +57,6 @@ std::string random_char() {
   std::string afull = alphabet_caps();
   return char_to_string(afull.at(std::rand() % afull.length()));
 }
-
-// why didnt i just make these two functions above return !!? >.<
 
 // God i love programming
 template< class T, class V > // todo: type constraints for map
@@ -92,9 +94,10 @@ int main(int argc, char **argv) {
               case 2:
                 return ambigious_char();
             }
+            return random_char(); // default to char.
           }));
-  if (argc != 3) {
-    std::cout << "please use this format: ./pwg " << generate_mode_str() << " [0..infinity]" << std::endl;
+  if (argc != 3 && argc != 4) {
+    std::cout << "please use this format: ./pwg " << generate_mode_str() << " [0..infinity] {c/C}" << std::endl;
   } else {
     std::srand( std::time(NULL) );
     int length = std::atoi(argv[2]);
@@ -106,7 +109,12 @@ int main(int argc, char **argv) {
       return 1;
     } // avoid else !
 
-    std::cout << generate_password(pw_type, length) << std::endl;
-
+    std::string password = generate_password(pw_type, length);
+    if(argc == 4 && (strcmp(argv[3], "c") == 0 || strcmp(argv[3], "C") == 0)) {
+      copy_to_clipboard(password);
+    } else if(argc == 3)
+      std::cout << password << std::endl;
+    else
+      std::cout << "invalid parameter count. (4th parameter is not copy-specified!)" << std::endl;
   }
 }
