@@ -85,6 +85,13 @@ int main(int argc, char **argv) {
     modes.insert(std::pair<std::string, std::function<std::string()>>(std::string("al"), [](){ return random_char(); }));
     modes.insert(std::pair<std::string, std::function<std::string()>>(std::string("di"), [](){ return random_num(); }));
     modes.insert(std::pair<std::string, std::function<std::string()>>(std::string("am"), [](){ return ambigious_char(); }));
+    modes.insert(std::pair<std::string, std::function<std::string()>>(std::string("aldi"), [](){ switch(std::rand() % 2){
+            case 0:
+              return random_num();
+            case 1:
+              return random_char();
+          }
+          return random_char();} ));
     modes.insert(std::pair<std::string, std::function<std::string()>>(std::string("all"), [](){
             switch (std::rand() % 3) {
               case 0:
@@ -94,6 +101,7 @@ int main(int argc, char **argv) {
               case 2:
                 return ambigious_char();
             }
+            std::cout << "i hit here!" << std::endl;
             return random_char(); // default to char.
           }));
   if (argc != 3 && argc != 4) {
